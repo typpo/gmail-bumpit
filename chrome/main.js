@@ -39,11 +39,6 @@ $(function() {
         });
       }
 
-      var cancelDialog = function() {
-        $mask.remove();
-        $dialog.remove();
-      }
-
       // Build DOM
       $morebtn.parent()
         .append('<div id="bump_later" class="T-I J-J5-Ji ar7 nf T-I-ax7 L3"><span>Bump Later</span></div>')
@@ -71,8 +66,11 @@ $(function() {
               .append('<p><label><input type="radio" name="bump_when"> in 2 weeks</label>')
               .append('<p><label><input type="radio" name="bump_when"> in 1 month</label>')
               .append('<p><label><input type="radio" name="bump_when"> in <input type="text" style="width:2em"/> <select><option>days</option><option selected>weeks</option><option>months</option></select>')
-              .append('<p><button>Submit</button><button>Cancel</button>');
 
+          $button_container = $('<p>');
+          $submit_button = $('<button disabled>Submit</button>');
+          $cancel_button = $('<button>Cancel</button>');
+          $button_container.append($submit_button).append($cancel_button).appendTo($dialog);
           $dialog.appendTo('body');
 
           // Background mask
@@ -87,10 +85,25 @@ $(function() {
             'opacity': .7
           }).appendTo('body').on('click', cancelDialog);
 
+          var cancelDialog = function() {
+            $mask.remove();
+            $dialog.remove();
+          }
+
           // Grab message id
           var mid;
           getMessageId(function(x) {
             mid = x;
+            $submit_button.removeAttr('disabled');
+          });
+
+          // Bind cancel
+          $cancel_button.on('click', cancelDialog);
+
+          // Bind message submission
+          $submit_button.on('click', function() {
+
+            cancelDialog();
           });
         });  // end onclick
     }
