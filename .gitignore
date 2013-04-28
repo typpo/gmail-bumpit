@@ -2,3 +2,9 @@
 *.swo
 *~
 *.pyc
+
+server/bin
+server/local
+server/include
+server/lib
+

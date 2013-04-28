@@ -4,11 +4,15 @@
 # Probably needs to switch to oauth (XOAuth) so everyone can use it.
 
 import smtplib
+import credentials
 
 BUMP_MESSAGE = """This email was bumped automatically.
 """
 
-def login_and_mail(account_email, account_pass):
+account_email = credentials.email
+account_pass = credentials.password
+def login_and_mail(subject, message_id):
+  print 'logging in and mailing...'
   session = smtplib.SMTP('smtp.gmail.com', 587)
   session.ehlo()
   session.starttls()
@@ -16,9 +20,9 @@ def login_and_mail(account_email, account_pass):
   print session.login(account_email, account_pass)
 
   headers = ["from: " + account_email,
-             "subject: RE: Teste mail",
+             "subject: %s" % subject,
              "to: " + account_email,
-             "In-Reply-To: <CABHM1-p9=yNM4Sw-_zt-GgDj5MeLz_b0Nm_SC23juqHQA_V+Pw@mail.gmail.com>",
+             "In-Reply-To: <%s>" % message_id,
              "mime-version: 1.0",
              "content-type: text/html"]
   headers = "\r\n".join(headers)
@@ -27,7 +31,5 @@ def login_and_mail(account_email, account_pass):
   print 'bumpit success!'
 
 if __name__ == "__main__":
-  # 2-factor auth?  Get a password from
-  # https://accounts.google.com/b/0/IssuedAuthSubTokens?hide_authsub=1
-  login_and_mail('emailaddress@gmail.com', 'password')
+  login_and_mail('test subj', '')
 

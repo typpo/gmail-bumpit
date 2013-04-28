@@ -14,7 +14,7 @@ $(function() {
 
       // Various helper functions
 
-      var getMessageId = function(callback) {
+      var getMessageInfo = function(callback) {
         var gmail_globals = [];
         var $globals_include = $('#hist_state').next();
         if ($globals_include.prop('tagName') === 'SCRIPT') {
@@ -34,8 +34,10 @@ $(function() {
               + '?ui=2&ik=' + gmail_ik + '&view=om&th=' + gmail_th;
         $.get(details_url, function(data) {
           var message_id = data.match(/Message-ID: <([^>]+)/)[1];
+          var subject = data.match(/Subject: (.+)/)[1];
           console.log('message_id', message_id);
-          callback(message_id);
+          console.log('subject', subject);
+          callback(message_id, subject);
         });
       }
 
@@ -57,9 +59,9 @@ $(function() {
             'color': '#eee',
             'padding': '15px'
           });
-          $dialog.append('<p><strong>When do you want to bump this email?</strong></p>')
+          $dialog.append('<p><strong>Return this email to your inbox...</strong></p>')
             .append('<form>')
-              .append('<p><label><input type="radio" name="bump_when"> Tomorrow</label>')
+              .append('<p><label><input type="radio" name="bump_when"> tomorrow</label>')
               .append('<p><label><input type="radio" name="bump_when"> in 2 days</label>')
               .append('<p><label><input type="radio" name="bump_when"> in 5 days</label>')
               .append('<p><label><input type="radio" name="bump_when" checked> in 1 week</label>')
@@ -68,7 +70,7 @@ $(function() {
               .append('<p><label><input type="radio" name="bump_when"> in <input type="text" style="width:2em"/> <select><option>days</option><option selected>weeks</option><option>months</option></select>')
 
           $button_container = $('<p>');
-          $submit_button = $('<button disabled>Submit</button>');
+          $submit_button = $('<button>Submit</button>');
           $cancel_button = $('<button>Cancel</button>');
           $button_container.append($submit_button).append($cancel_button).appendTo($dialog);
           $dialog.appendTo('body');
@@ -90,20 +92,22 @@ $(function() {
             $dialog.remove();
           }
 
-          // Grab message id
-          var mid;
-          getMessageId(function(x) {
-            mid = x;
-            $submit_button.removeAttr('disabled');
-          });
-
           // Bind cancel
           $cancel_button.on('click', cancelDialog);
 
           // Bind message submission
           $submit_button.on('click', function() {
+            $submit_button.attr('disabled', '');
+            getMessageInfo(function(m_id, subject) {
+              $.post('http://localhost:6900/schedule', {
+                'm_id': m_id,
+                'subj': subject,
+              }, function(data) {
+                console.log(data);
+              });
 
-            cancelDialog();
+              cancelDialog();
+            });
           });
         });  // end onclick
     }
