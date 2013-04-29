@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-import gmail
+import time
+import datetime
+from redis import StrictRedis
 from flask import Flask, request, url_for, jsonify
 app = Flask(__name__)
 
@@ -18,7 +20,16 @@ def schedule():
     print 'Scheduling bump...'
     print '\tsubject:', subject
     print '\tmessage id:', message_id
-    gmail.login_and_mail(subject, message_id)
+
+    job = {
+        'subject': subject,
+        'message_id': message_id,
+        }
+
+    r = StrictRedis(host='localhost', port=6379, db=4)
+    scheduled_for = datetime.datetime.now() + datetime.timedelta(days=5)  # TODO
+    scheduled_for_ts = time.mktime(scheduled_for.timetuple())
+    r.zadd('jobs', scheduled_for_ts, json.dumps(jobs))
 
   return jsonify({'success': True})
 
