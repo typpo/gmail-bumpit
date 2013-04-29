@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import time
 import datetime
-from redis import StrictRedis
+import jobs
 from flask import Flask, request, url_for, jsonify
 app = Flask(__name__)
 
@@ -20,16 +20,9 @@ def schedule():
     print 'Scheduling bump...'
     print '\tsubject:', subject
     print '\tmessage id:', message_id
-
-    job = {
-        'subject': subject,
-        'message_id': message_id,
-        }
-
-    r = StrictRedis(host='localhost', port=6379, db=4)
     scheduled_for = datetime.datetime.now() + datetime.timedelta(days=5)  # TODO
-    scheduled_for_ts = time.mktime(scheduled_for.timetuple())
-    r.zadd('jobs', scheduled_for_ts, json.dumps(jobs))
+    jobs.add(subject, message_id, scheduled_for)
+
 
   return jsonify({'success': True})
 
