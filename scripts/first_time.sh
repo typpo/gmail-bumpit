@@ -30,7 +30,12 @@ git push heroku master || failed
 
 heroku ps:scale web=1
 
+echo
+echo "Edit your config file"
+echo "< ... >"
+
 echo 'Setup succeeded.'
+echo
 echo 'Opening the Heroku scheduler. To receive emails, you need to set python scripts/cron.sh to run every half hour or so.'
 heroku addons:open scheduler
 
