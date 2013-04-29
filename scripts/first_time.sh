@@ -30,9 +30,8 @@ git push heroku master || failed
 
 heroku ps:scale web=1
 
-echo
-echo "Edit your config file"
-echo "< ... >"
+# Configure email/pass
+scripts/set_heroku_config.sh
 
 echo 'Setup succeeded.'
 echo
