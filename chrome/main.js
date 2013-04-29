@@ -34,7 +34,11 @@ $(function() {
               + '?ui=2&ik=' + gmail_ik + '&view=om&th=' + gmail_th;
         $.get(details_url, function(data) {
           var message_id = data.match(/Message-ID: <([^>]+)/)[1];
-          var subject = data.match(/Subject: (.+)/)[1];
+          var subject_matches = data.match(/Subject: (.+)/);
+          var subject = '';
+          if (subject_matches && subject_matches.length > 1) {
+            subject = subject_matches[1];
+          }
           console.log('message_id', message_id);
           console.log('subject', subject);
           callback(message_id, subject);

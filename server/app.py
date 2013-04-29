@@ -14,7 +14,7 @@ def schedule():
 
   message_id = request.form.get('m_id', None)
   subject = request.form.get('subj', None)
-  if message_id and subject:
+  if message_id:
     print 'Scheduling bump...'
     print '\tsubject:', subject
     print '\tmessage id:', message_id
