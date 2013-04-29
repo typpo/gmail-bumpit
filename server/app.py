@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# Basic flask app for bump scheduling
+
 import time
 import datetime
 import jobs
@@ -7,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-  return 'Gmail bumpit ready.'
+  return 'Your gmail bump server is running.'
 
 @app.route('/schedule', methods=['GET', 'POST'])
 def schedule():

@@ -12,7 +12,7 @@ BUMP_MESSAGE = """This email was bumped automatically.
 account_email = credentials.email
 account_pass = credentials.password
 def login_and_mail(subject, message_id):
-  print 'logging in and mailing...'
+  print 'Logging in and mailing...'
   session = smtplib.SMTP('smtp.gmail.com', 587)
   session.ehlo()
   session.starttls()
@@ -28,7 +28,7 @@ def login_and_mail(subject, message_id):
   headers = "\r\n".join(headers)
   session.sendmail(account_email, account_email, \
       headers + "\r\n\r\n" + BUMP_MESSAGE)
-  print 'bumpit success!'
+  print 'Bumped "%s" successfully' % (subject)
 
 if __name__ == "__main__":
   login_and_mail('test subj', '')
