@@ -7,7 +7,7 @@ import smtplib
 import os
 if 'GMAIL_BUMPER_EMAIL' in os.environ and 'GMAIL_BUMPER_PASSWORD' in os.environ:
   account_email = os.environ['GMAIL_BUMPER_EMAIL']
-  account_pass = os.environ['GMAIL_BUMPER_PASS']
+  account_pass = os.environ['GMAIL_BUMPER_PASSWORD']
 else:
   from credentials import email as account_email
   from credentials import password as account_pass
