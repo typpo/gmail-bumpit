@@ -7,4 +7,4 @@ server/bin
 server/local
 server/include
 server/lib
-
+server/credentials.py
