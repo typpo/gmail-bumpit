@@ -36,7 +36,7 @@ echo "< ... >"
 
 echo 'Setup succeeded.'
 echo
-echo 'Opening the Heroku scheduler. To receive emails, you need to set python scripts/cron.sh to run every half hour or so.'
+echo "To receive emails, open the heroku scheduler and set it to run 'python server/jobs.py' every 10 minutes."
 heroku addons:open scheduler
 
 #heroku open
