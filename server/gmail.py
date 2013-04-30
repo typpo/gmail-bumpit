@@ -16,8 +16,6 @@ else:
 BUMP_MESSAGE = """This email was bumped automatically.
 """
 
-account_email = credentials.email
-account_pass = credentials.password
 def login_and_mail(subject, message_id):
   print 'Logging in and mailing...'
   session = smtplib.SMTP('smtp.gmail.com', 587)
